@@ -68,7 +68,7 @@ public class PluginImpl implements CallbackPlugin {
         Query groupQuery = new QueryBuilder().filter("displayName eq \"" + TEST_GROUP_NAME + "\"").build();
         SCIMSearchResult<Group> result = connector.searchGroups(groupQuery, getAccessToken());
 
-        if(result.getTotalResults() > 0){
+        if (result.getTotalResults() > 0) {
             Group testGroup = result.getResources().get(0);
             return testGroup;
         }
@@ -83,7 +83,7 @@ public class PluginImpl implements CallbackPlugin {
     }
 
     private AccessToken getAccessToken() {
-        if(accessToken == null){
+        if (accessToken == null) {
             accessToken = getOsiamConnector().retrieveAccessToken(getUserName(), getUserPassword(), Scope.ADMIN);
         }
 
@@ -91,16 +91,12 @@ public class PluginImpl implements CallbackPlugin {
     }
 
     private OsiamConnector getOsiamConnector() {
-        if(connector == null){
+        if (connector == null) {
             OsiamConnector.Builder builder = new OsiamConnector.Builder()
                     .setClientId(getClientId())
                     .setClientSecret(getClientSecret());
 
-            if (getOsiamVersion().startsWith("2")) {
-                builder.setEndpoint(getOsiamEndpoint());
-            } else {
-                builder.withEndpoint(getOsiamEndpoint());
-            }
+            builder.withEndpoint(getOsiamEndpoint());
 
             connector = builder.build();
         }
